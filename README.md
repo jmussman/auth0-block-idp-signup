@@ -5,8 +5,8 @@
 
 ## Overview
 
-When linking a partner IdP as an *enterprise* connection, limiting the users from that IdP that may be processed through a signup
-and have a profile created.
+When linking a partner IdP as an *enterprise* connection limiting the users from that IdP that may be processed through a signup
+and have a profile may be a requirement.
 
 The initial requirement was to build a deny-list of usernames/email or email domain names, but it would be a simple
 task to reverse that logic and provide an allow-list of usernames/email that may be processed through.
