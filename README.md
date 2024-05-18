@@ -37,7 +37,8 @@ This is an overview of the configuration that must be established.
 3. Add the *auth0* Node.js package as a dependency for the action.
 4. Add secrets for *domain*, *clientId*, and *clientSecret* using the values from the application in step 1.
 5. Add a secret *block* with an email address to block for testing.
-6. Save and deploy the action in the post-login flow.
+6. Add a secret *debug* with a value of true for console messages during testing, clear it for production. A re-deployment is neccessary after changing a secret.
+7. Save and deploy the action in the post-login flow.
 
 ## License
 

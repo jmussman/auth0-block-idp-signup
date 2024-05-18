@@ -16,12 +16,17 @@
  * 
  * This example uses a secret in the action, 'block', with the value of a single email to block.
  * 
+ * THe action secret 'debug' with a value of true can be added to generate console log statements.
+ * If 'debug' is set or removed, a re-deployment of the application is necessary for it to take effect.
+ * 
  * Add the 'auth0' Node.js dependency at the latest version. Add the credentials for an M2M
  * application with delete:users permission in the management API as the domain, clientId,
  * and clientSecret) secrets. Prime the 'block' secret with an email address to test with.
  */
 
 exports.onExecutePostLogin = async (event, api) => {
+
+    const DEBUG = event.secrets.debug;
 
     // Set up the connection to the management API (act as the management API client).
 
@@ -36,6 +41,8 @@ exports.onExecutePostLogin = async (event, api) => {
 
     try {
 
+        DEBUG ? console.log('Starting block action') : null;
+
         // Prioritize the username over the email as the login name to check against.
         
         const username = event.user.username ?? event.user.email;
@@ -49,6 +56,8 @@ exports.onExecutePostLogin = async (event, api) => {
         
         if (username === event.secrets.block) {
 
+            DEBUG ? console.log(`Blocking and deleting user registration for ${event.user.user_id} (${username})`) : null;
+
             const result = await managementClient.users.delete({ id: event.user.user_id });
 
             api.access.deny('Because I said so!');
@@ -57,6 +66,6 @@ exports.onExecutePostLogin = async (event, api) => {
 
     catch (e) {
 
-        // Either the credentials are wrong or the profile doesn't exist. Not much to do. 
+       DEBUG ? console.log(e) : null;
     }
 }
