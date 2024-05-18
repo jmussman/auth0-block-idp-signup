@@ -13,6 +13,10 @@ task to reverse that logic and provide an allow-list of usernames/email that may
 
 This is also perfectly useful to look at social-media signups fromn *social* connections and block them as desired.
 
+This is one of a series of action examples that may be used as a foundation for building
+what you need.
+Search GitHub for *jmussman/auth0* to find other examples in the series.
+
 ## Implementation
 
 The implementation prioritizes the event.user.username attribute over the event.user.email attribute.
