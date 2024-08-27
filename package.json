@@ -1,0 +1,23 @@
+{
+  "name": "auth0-block-idp-signup",
+  "version": "1.0.0",
+  "lockfileVersion": 3,
+  "requires": true,
+  "type": "module",
+  "packages": {},
+  "devDependencies": {
+    "@vitest/coverage-v8": "^1.6.0",
+    "auth0": "^4.8.0",
+    "ejs-lint": "^2.0.0",
+    "mock-require": "^3.0.3",
+    "vitest": "latest"
+  },
+  "scripts": {
+    "test": "vitest run --no-file-parallelism",
+    "test-coverage": "vitest run --no-file-parallelism --coverage"
+  },
+  "dependencies": {
+    "vitest-mock-commonjs": "file:../vitest-mock-commonjs",
+    "vitest-mockrequire": "file:../vitest-mockrequire"
+  }
+}
