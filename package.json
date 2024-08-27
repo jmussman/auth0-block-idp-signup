@@ -9,15 +9,11 @@
     "@vitest/coverage-v8": "^1.6.0",
     "auth0": "^4.8.0",
     "ejs-lint": "^2.0.0",
-    "mock-require": "^3.0.3",
-    "vitest": "latest"
+    "vitest": "latest",
+    "vitest-mock-commonjs": "^1.0.1"
   },
   "scripts": {
     "test": "vitest run --no-file-parallelism",
     "test-coverage": "vitest run --no-file-parallelism --coverage"
-  },
-  "dependencies": {
-    "vitest-mock-commonjs": "file:../vitest-mock-commonjs",
-    "vitest-mockrequire": "file:../vitest-mockrequire"
   }
 }
