@@ -95,7 +95,7 @@ describe('Action tests', async () => {
 
         expect(mocks.auth0Mock.managementClient.users.delete).not.toHaveBeenCalled()
         expect(mocks.apiMock.access.deny).not.toHaveBeenCalled()
-    });
+    })
 
     it('Ignores everything if event.secrets.deny is null', async () => {
 
@@ -105,7 +105,7 @@ describe('Action tests', async () => {
 
         expect(mocks.auth0Mock.managementClient.users.delete).not.toHaveBeenCalled()
         expect(mocks.apiMock.access.deny).not.toHaveBeenCalled()
-    });
+    })
 
     it('Ignores everything if the denyList evaluates to empty', async () => {
 
@@ -215,7 +215,7 @@ describe('Action tests', async () => {
         expect(mocks.apiMock.access.deny).toHaveBeenCalled()
     })
 
-    it ('Selects email when username is undefined', async () => {
+    it('Selects email when username is undefined', async () => {
 
         delete mocks.eventMock.user.username
 
@@ -226,7 +226,7 @@ describe('Action tests', async () => {
         expect(consoleLogMock).toHaveBeenCalledWith(expect.stringContaining(mocks.eventMock.user.email))
     })
 
-    it ('Selects email when username is empty', async () => {
+    it('Selects email when username is empty', async () => {
 
         mocks.eventMock.user.username = ''
 
@@ -237,7 +237,7 @@ describe('Action tests', async () => {
         expect(consoleLogMock).toHaveBeenCalledWith(expect.stringContaining(mocks.eventMock.user.email))
     })
 
-    it ('Selects email when username is blank', async () => {
+    it('Selects email when username is blank', async () => {
 
         mocks.eventMock.user.username = '     '
 
@@ -248,7 +248,7 @@ describe('Action tests', async () => {
         expect(consoleLogMock).toHaveBeenCalledWith(expect.stringContaining(mocks.eventMock.user.email))
     })
 
-    it ('Selects username over email', async () => {
+    it('Selects username over email', async () => {
 
         mocks.eventMock.user.username = 'blackbeard@pyrates.live'
 
@@ -259,14 +259,14 @@ describe('Action tests', async () => {
         expect(consoleLogMock).toHaveBeenCalledWith(expect.stringContaining('blackbeard@pyrates.live'))
     })
 
-    it ('Enroll emits debugging messages to the console if event.secrets.debug is true', async () => {
+    it('Enroll emits debugging messages to the console if event.secrets.debug is true', async () => {
 
         await onExecutePostLogin(mocks.eventMock, mocks.apiMock)
 
         expect(consoleLogMock).toHaveBeenCalled()
     })
 
-    it ('Does not emit debugging messages to the console if event.secrets.debug is undefined', async () => {
+    it('Does not emit debugging messages to the console if event.secrets.debug is undefined', async () => {
         
         delete mocks.eventMock.secrets.debug
 
@@ -275,7 +275,7 @@ describe('Action tests', async () => {
         expect(consoleLogMock).not.toHaveBeenCalled()
     })
 
-    it ('Does not emit debugging messages to the console if event.secrets.debug is null', async () => {
+    it('Does not emit debugging messages to the console if event.secrets.debug is null', async () => {
         
         mocks.eventMock.secrets.debug = null
 
@@ -284,7 +284,7 @@ describe('Action tests', async () => {
         expect(consoleLogMock).not.toHaveBeenCalled()
     })
 
-    it ('Does not emit debugging messages to the console if event.secrets.debug is false', async () => {
+    it('Does not emit debugging messages to the console if event.secrets.debug is false', async () => {
 
         mocks.eventMock.secrets.debug = false
 
@@ -293,7 +293,7 @@ describe('Action tests', async () => {
         expect(consoleLogMock).not.toHaveBeenCalled()
     })
 
-    it ('Does not emit debugging messages to the console if event.secrets.debug is 0', async () => {
+    it('Does not emit debugging messages to the console if event.secrets.debug is 0', async () => {
         
         mocks.eventMock.secrets.debug = 0
 

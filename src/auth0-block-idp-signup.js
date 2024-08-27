@@ -1,5 +1,5 @@
 /**
- * auth0-block-idp-signup
+ * auth0-block-idp-signup.js
  * Copyright © 2024 Joel A Mussman. All rights reserved.
  * 
  * This code is released under the MIT license and is free to copy and modify as
