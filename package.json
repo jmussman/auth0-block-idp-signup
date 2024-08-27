@@ -6,11 +6,11 @@
   "type": "module",
   "packages": {},
   "devDependencies": {
-    "@vitest/coverage-v8": "^1.6.0",
-    "auth0": "^4.8.0",
-    "ejs-lint": "^2.0.0",
+    "@vitest/coverage-v8": "latest",
+    "auth0": "latest",
+    "ejs-lint": "latest",
     "vitest": "latest",
-    "vitest-mock-commonjs": "^1.0.1"
+    "vitest-mock-commonjs": "latest"
   },
   "scripts": {
     "test": "vitest run --no-file-parallelism",
