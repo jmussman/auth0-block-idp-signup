@@ -86,8 +86,6 @@ describe('Action tests', async () => {
         ctor = vi.spyOn(mocks.auth0Mock, 'ManagementClient').mockImplementation(() => { return { users: mocks.auth0Mock.managementClient.users }})
         mocks.apiMock.access.deny.mockClear()
         mocks.auth0Mock.managementClient.users.delete.mockClear()
-        mocks.eventMock.secrets.debug = true   
-        mocks.eventMock.secrets.deny = 'calicojack@pyrates.live, blackbeard@pyrates.live'
     })
 
     it('Ignores everything if event.secrets.deny is undefined', async () => {
@@ -127,6 +125,8 @@ describe('Action tests', async () => {
     })
 
     it('Passes domain, clientID, and clientSecret to initialize managementClient', async () => {
+        
+        mocks.eventMock.secrets.deny = 'calicojack@pyrates.live, blackbeard@pyrates.live'
 
         const expectedOptions = {
 
@@ -211,6 +211,8 @@ describe('Action tests', async () => {
     })
 
     it('Selects email when username is undefined', async () => {
+        
+        mocks.eventMock.secrets.deny = 'calicojack@pyrates.live, blackbeard@pyrates.live'
 
         delete mocks.eventMock.user.username
 
@@ -223,6 +225,7 @@ describe('Action tests', async () => {
 
     it('Selects email when username is empty', async () => {
 
+        mocks.eventMock.secrets.deny = 'calicojack@pyrates.live, blackbeard@pyrates.live'
         mocks.eventMock.user.username = ''
 
         await onExecutePostLogin(mocks.eventMock, mocks.apiMock)
@@ -234,6 +237,7 @@ describe('Action tests', async () => {
 
     it('Selects email when username is blank', async () => {
 
+        mocks.eventMock.secrets.deny = 'calicojack@pyrates.live, blackbeard@pyrates.live'
         mocks.eventMock.user.username = '     '
 
         await onExecutePostLogin(mocks.eventMock, mocks.apiMock)
@@ -245,6 +249,7 @@ describe('Action tests', async () => {
 
     it('Selects username over email', async () => {
 
+        mocks.eventMock.secrets.deny = 'calicojack@pyrates.live, blackbeard@pyrates.live'
         mocks.eventMock.user.username = 'blackbeard@pyrates.live'
 
         await onExecutePostLogin(mocks.eventMock, mocks.apiMock)
@@ -255,6 +260,8 @@ describe('Action tests', async () => {
     })
 
     it('Enroll emits debugging messages to the console if event.secrets.debug is true', async () => {
+
+        mocks.eventMock.secrets.debug = true   
 
         await onExecutePostLogin(mocks.eventMock, mocks.apiMock)
 
@@ -297,18 +304,9 @@ describe('Action tests', async () => {
         expect(consoleLogMock).not.toHaveBeenCalled()
     })
 
-    it('Catches exception thrown during API calls', async () => {
+    it('Catches exception thrown and logs it during ManagementClient instantiation', async () => {
 
-        // Redefine the API deny call to throw an exception.
-
-        const message = 'This message should be logged'
-
-        mocks.apiMock.access.deny = vi.fn(() => { throw message })
- 
-        expect(async () => await onExecutePostLogin(mocks.eventMock, mocks.apiMock)).rejects.toThrow(expect.stringContaining(message))
-    })
-
-    it('Catches exception thrown during ManagementClient instantiation', async () => {
+        mocks.eventMock.secrets.debug = true   
         
         // Redefine the ManagementClient constructor to throw an exception.
 
@@ -319,7 +317,9 @@ describe('Action tests', async () => {
         expect(consoleLogMock).toHaveBeenCalledWith(expect.stringContaining(message))
     })
 
-    it('Does not log exception thrown for ManagementClient instantiation when DEBUG is false', async () => {
+    it('Catches exception thrown and does not log it when debug is off', async () => {
+
+        mocks.eventMock.secrets.debug = false   
 
         const message = 'This message should be logged'
 
@@ -330,5 +330,18 @@ describe('Action tests', async () => {
  
         expect(async () => await onExecutePostLogin(mocks.eventMock, mocks.apiMock)).rejects.toThrow(expect.stringContaining(message))
         expect(consoleLogMock).not.toHaveBeenCalled()
+    })
+
+    it('Catches exception thrown and logs it during API calls', async () => {
+
+        mocks.eventMock.secrets.debug = true   
+
+        // Redefine the API deny call to throw an exception.
+
+        const message = 'This message should be logged'
+
+        mocks.apiMock.access.deny = vi.fn(() => { throw message })
+ 
+        expect(async () => await onExecutePostLogin(mocks.eventMock, mocks.apiMock)).rejects.toThrow(expect.stringContaining(message))
     })
 })
