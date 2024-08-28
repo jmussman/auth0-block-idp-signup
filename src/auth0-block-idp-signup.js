@@ -38,13 +38,13 @@ exports.onExecutePostLogin = async (event, api) => {
 
         denyList = deny.split(',');
 
-        for (let i = 0; i < denyList.length; i++) {
+        for (let i = denyList.length - 1; i >= 0; i--) {
 
             denyList[i] = denyList[i].trim();
             
             if (!denyList[i]) {
             
-                // It is safe to delete entries in a for loop since the array length reduces.
+                // It is safe to delete entries in a descending for loop since the array length reduces.
 
                 denyList.splice(i, 1);
             }

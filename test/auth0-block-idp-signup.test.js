@@ -72,6 +72,7 @@ const mocks = vi.hoisted(() => {
 describe('Action tests', async () => {
 
     let consoleLogMock
+    let ctor
 
     beforeAll(async () => {
 
@@ -82,9 +83,11 @@ describe('Action tests', async () => {
     beforeEach(() => {
 
         consoleLogMock.mockClear()
+        ctor = vi.spyOn(mocks.auth0Mock, 'ManagementClient').mockImplementation(() => { return { users: mocks.auth0Mock.managementClient.users }})
         mocks.apiMock.access.deny.mockClear()
         mocks.auth0Mock.managementClient.users.delete.mockClear()
-        mocks.eventMock.secrets.debug = true
+        mocks.eventMock.secrets.debug = true   
+        mocks.eventMock.secrets.deny = 'calicojack@pyrates.live, blackbeard@pyrates.live'
     })
 
     it('Ignores everything if event.secrets.deny is undefined', async () => {
@@ -93,8 +96,7 @@ describe('Action tests', async () => {
 
         await onExecutePostLogin(mocks.eventMock, mocks.apiMock)
 
-        expect(mocks.auth0Mock.managementClient.users.delete).not.toHaveBeenCalled()
-        expect(mocks.apiMock.access.deny).not.toHaveBeenCalled()
+        expect(ctor).not.toHaveBeenCalled()
     })
 
     it('Ignores everything if event.secrets.deny is null', async () => {
@@ -103,8 +105,7 @@ describe('Action tests', async () => {
 
         await onExecutePostLogin(mocks.eventMock, mocks.apiMock)
 
-        expect(mocks.auth0Mock.managementClient.users.delete).not.toHaveBeenCalled()
-        expect(mocks.apiMock.access.deny).not.toHaveBeenCalled()
+        expect(ctor).not.toHaveBeenCalled()
     })
 
     it('Ignores everything if the denyList evaluates to empty', async () => {
@@ -113,8 +114,7 @@ describe('Action tests', async () => {
 
         await onExecutePostLogin(mocks.eventMock, mocks.apiMock)
 
-        expect(mocks.auth0Mock.managementClient.users.delete).not.toHaveBeenCalled()
-        expect(mocks.apiMock.access.deny).not.toHaveBeenCalled()
+        expect(ctor).not.toHaveBeenCalled()
     })
 
     it('Ignores everything if all the denyList entries evaluate to empty', async () => {
@@ -123,8 +123,7 @@ describe('Action tests', async () => {
 
         await onExecutePostLogin(mocks.eventMock, mocks.apiMock)
 
-        expect(mocks.auth0Mock.managementClient.users.delete).not.toHaveBeenCalled()
-        expect(mocks.apiMock.access.deny).not.toHaveBeenCalled()
+        expect(ctor).not.toHaveBeenCalled()
     })
 
     it('Passes domain, clientID, and clientSecret to initialize managementClient', async () => {
@@ -136,13 +135,9 @@ describe('Action tests', async () => {
             domain: mocks.eventMock.secrets.domain
         }
 
-        const ctor = vi.spyOn(mocks.auth0Mock, 'ManagementClient').mockImplementation(() => { return { users: mocks.auth0Mock.managementClient.users }})
-
         await onExecutePostLogin(mocks.eventMock, mocks.apiMock)
 
         expect(ctor).toHaveBeenCalledWith(expectedOptions)
-
-        ctor.mockRestore()
     })
 
     it('Allows authentication if the user is not the single deny list entry', async () => {
@@ -318,12 +313,10 @@ describe('Action tests', async () => {
         // Redefine the ManagementClient constructor to throw an exception.
 
         const message = 'This message should be logged'
-        const ctor = vi.spyOn(mocks.auth0Mock, 'ManagementClient').mockImplementation(() => { throw message })
+        ctor = vi.spyOn(mocks.auth0Mock, 'ManagementClient').mockImplementation(() => { throw message })
 
         expect(async () => await onExecutePostLogin(mocks.eventMock, mocks.apiMock)).rejects.toThrow(expect.stringContaining(message))
         expect(consoleLogMock).toHaveBeenCalledWith(expect.stringContaining(message))
-
-        ctor.mockRestore()
     })
 
     it('Does not log exception thrown for ManagementClient instantiation when DEBUG is false', async () => {
