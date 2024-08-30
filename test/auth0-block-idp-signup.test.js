@@ -82,6 +82,17 @@ describe('Action tests', async () => {
 
     beforeEach(() => {
 
+        // Reset to the original mock values from above.
+
+        mocks.eventMock.secrets.clientId = 'abc'
+        mocks.eventMock.secrets.clientSecret = 'xyz'
+        mocks.eventMock.secrets.debug = true
+        mocks.eventMock.secrets.deny = 'calicojack@pyrates.live, blackbeard@pyrates.live'
+        mocks.eventMock.secrets.domain = 'pid.pyrates.live'
+        mocks.eventMock.user.email = 'calicojack@pyrates.live'
+        mocks.eventMock.user.user_id = 'auth0|5f7c8ec7c33c6c004bbafe82'
+        mocks.eventMock.user.username = null
+
         consoleLogMock.mockClear()
         ctor = vi.spyOn(mocks.auth0Mock, 'ManagementClient').mockImplementation(() => { return { users: mocks.auth0Mock.managementClient.users }})
         mocks.apiMock.access.deny.mockClear()
